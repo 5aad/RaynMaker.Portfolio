@@ -4,7 +4,7 @@
       <CCardHeader>
         <CCardTitle>Performance</CCardTitle>
       </CCardHeader>
-      <CCardBody>
+      <div style="padding: 16px;">
         <table v-if="performance">
           <tr>
             <th class="label">Investment time</th>
@@ -47,14 +47,14 @@
             <td class="value">{{ performance.totalProfit }}</td>
           </tr>
         </table>
-      </CCardBody>
+      </div>
     </CCard>
 
     <CCard>
       <CCardHeader>
         <CCardTitle>Benchmark</CCardTitle>
       </CCardHeader>
-      <CCardBody v-if="benchmark">
+      <div style="padding: 16px;" v-if="benchmark">
         <p>
           If you would have bought the benchmark "{{ benchmark.name }}" (Isin: {{ benchmark.isin }}) instead of your stock picks you would have gained:
         </p>
@@ -80,7 +80,7 @@
         <p>
           <label>Annual ROI: </label> {{ benchmark.buyPlan.totalRoiAnnual }}
         </p>
-      </CCardBody>
+      </div>
     </CCard>
   </div>
 </template>

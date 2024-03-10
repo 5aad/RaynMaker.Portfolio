@@ -1,30 +1,28 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import { createApp } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
+import Positions from '@/views/Positions/Open/Positions.vue'
+import Performance from '@/views/Performance/Performance.vue'
+import Cashflow from '@/views/Cashflow/Cashflow.vue'
+import ClosedPositions from '@/views/Positions/Closed/ClosedPositions.vue'
+import PositionDetails from '@/views/Positions/Details/PositionDetails.vue'
 import App from './App'
 import CoreuiVue from '@coreui/vue'
+const app = createApp(App)
 
-Vue.use(CoreuiVue)
-Vue.config.productionTip = false
+const routes = [
 
-Vue.use(Router)
-
-const router = new Router({
-  routes: [
-    { path: '/Positions', alias: '/', component: () => import('@/views//Positions/Open/Positions.vue') },
-    { path: '/Performance', component: () => import('@/views/Performance/Performance.vue') },
-    { path: '/Cashflow', component: () => import('@/views/Cashflow/Cashflow.vue') },
-    { path: '/ClosedPositions', component: () => import('@/views/Positions/Closed/ClosedPositions.vue') },
-    {
-      path: '/PositionDetails',
-      name: 'PositionDetails',
-      component: () => import('@/views/Positions/Details/PositionDetails.vue')
-    }
-  ],
+  { path: '/Positions', alias: '/', component: Positions },
+  { path: '/Cashflow', component: Cashflow },
+  { path: '/Performance', component: Performance },
+  { path: '/ClosedPositions', component: ClosedPositions },
+  { path: '/PositionDetails', name: 'PositionDetails', component: PositionDetails }
+]
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
   linkActiveClass: 'active',
   linkExactActiveClass: 'active'
 })
-
-new Vue({
-  router,
-  render: h => h(App)
-}).$mount('#app')
+app.use(CoreuiVue)
+app.use(router)
+app.mount('#app')

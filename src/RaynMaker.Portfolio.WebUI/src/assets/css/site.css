@@ -39,3 +39,8 @@ th {
 .loss {
     color: red;
 }
+
+.active{
+    color: black;
+    text-decoration: none;
+}

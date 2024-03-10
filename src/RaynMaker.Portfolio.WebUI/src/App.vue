@@ -1,21 +1,21 @@
 <template>
   <CWrapper>
     <CHeader fixed with-subheader light>
-      <CHeaderBrand style="padding:5px" to="/">
+      <CHeaderBrand style="padding:5px">
         RaynMaker
       </CHeaderBrand>
-      <CHeaderNav class="d-md-down-none mr-auto">
-        <CNavItem>
-          <router-link to="/Positions">Positions</router-link>
+      <CHeaderNav>
+        <CNavItem class="nav">
+          <router-link to="/Positions" exact :class="{ 'active': isActive(['/', '/Positions']) }">Positions</router-link>
         </CNavItem>
-          <CNavItem>
-            <router-link class="nav-link" to="/Performance">Performance</router-link>
+          <CNavItem class="nav">
+            <router-link to="/Performance" :class="{ 'active': isActive('/Performance') }">Performance</router-link>
           </CNavItem>
-          <CNavItem>
-            <router-link class="nav-link" to="/Cashflow">Cashflow</router-link>
+          <CNavItem class="nav">
+            <router-link to="/Cashflow" :class="{ 'active': isActive('/Cashflow') }">Cashflow</router-link>
           </CNavItem>
-          <CNavItem>
-            <router-link class="nav-link" to="/ClosedPositions">History</router-link>
+          <CNavItem class="nav">
+            <router-link to="/ClosedPositions" :class="{ 'active': isActive('/ClosedPositions') }">History</router-link>
           </CNavItem>
       </CHeaderNav>
     </CHeader>
@@ -24,7 +24,9 @@
       <main class="c-main">
         <CContainer fluid>
           <transition name="fade" mode="out-in">
-            <router-view :key="$route.path"></router-view>
+            <div>
+            <router-view :key="$route.path"/>
+          </div>
           </transition>
         </CContainer>
       </main>
@@ -35,7 +37,12 @@
 
 <script>
   export default {
-    name: 'app'
+    name: 'app',
+    methods: {
+    isActive (routes) {
+      return routes.includes(this.$route.path)
+    }
+  }
   }
 </script>
 

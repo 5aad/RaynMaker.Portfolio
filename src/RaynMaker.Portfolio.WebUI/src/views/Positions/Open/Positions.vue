@@ -4,7 +4,7 @@
       <CCardHeader>
         <CCardTitle>Positions</CCardTitle>
       </CCardHeader>
-      <CCardBody>
+      <div style="padding: 16px;">
         <form id="filter">
           <label style="margin-right:10px">Filter: </label>
           <input name="query" v-model="filter" />
@@ -18,59 +18,58 @@
         </form>
 
         <positions-grid :data="positions" :filter-key="filter" style="margin-top:10px"></positions-grid>
-      </CCardBody>
+      </div>
     </CCard>
 
     <CCard>
       <CCardHeader>
         <CCardTitle>Diversification</CCardTitle>
       </CCardHeader>
-      <CCardBody>
+      <div style="padding: 16px;">
         <p>
           Current value
         </p>
-        <pie-chart :width="500" :height="500" :data="diversification.capital" :labels="diversification.labels"></pie-chart>
-      </CCardBody>
+        <pie-chart :data="diversification.capital" :labels="diversification.labels"/>
+      </div>
     </CCard>
   </div>
 </template>
 
 <script>
-  import API from '@/api'
-  import PieChart from '@/components/PieChart'
-  import PositionsGrid from './PositionsGrid'
-
-  export default {
-    name: 'Positions',
-    data () {
-      return {
-        positions: [],
-        summary: {},
-        filter: '',
-        diversification: {
-          capital: null,
-          labels: null
-        }
+import { defineComponent } from 'vue'
+import API from '@/api'
+import PieChart from '@/components/PieChart'
+import PositionsGrid from './PositionsGrid'
+export default defineComponent({
+  name: 'Positions',
+   data () {
+    return {
+      positions: [],
+      summary: {},
+      filter: '',
+      diversification: {
+        capital: null,
+        labels: null
       }
-    },
-    components: {
-      'positions-grid': PositionsGrid,
-      'pie-chart': PieChart
-    },
-    async created () {
-      let response = await API.get('/positions')
-      this.positions = response.data.positions
-      this.summary = {
-        totalInvestment: response.data.totalInvestment,
-        currentValue: response.data.currentValue,
-        totalProfit: response.data.totalProfit
-      }
-
-      response = await API.get('/diversification')
-      this.diversification.capital = response.data.capital
-      this.diversification.labels = response.data.labels
     }
+  },
+  components: {
+    'positions-grid': PositionsGrid,
+    'pie-chart': PieChart
+  },
+  async created () {
+    let response = await API.get('/positions')
+    this.positions = response.data.positions
+    this.summary = {
+      totalInvestment: response.data.totalInvestment,
+      currentValue: response.data.currentValue,
+      totalProfit: response.data.totalProfit
+    }
+    response = await API.get('/diversification')
+    this.diversification.capital = response.data.capital
+    this.diversification.labels = response.data.labels
   }
+})
 </script>
 
 <style>

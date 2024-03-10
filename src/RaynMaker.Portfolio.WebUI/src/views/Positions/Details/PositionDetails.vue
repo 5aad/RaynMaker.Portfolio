@@ -4,7 +4,7 @@
       <CCardHeader>
         <CCardTitle>{{ name }}</CCardTitle>
       </CCardHeader>
-      <CCardBody>
+      <div style="padding: 16px;">
         <table>
           <tr>
             <th>Isin:</th>
@@ -31,14 +31,14 @@
             <td>{{ data.totalDividends}} {{currency}} ({{ data.dividendsRoi }} %)</td>
           </tr>
         </table>
-      </CCardBody>
+      </div>
     </CCard>
 
     <CCard>
       <CCardHeader>
         <CCardTitle>Transactions</CCardTitle>
       </CCardHeader>
-      <CCardBody>
+      <div style="padding: 16px;">
         <CDataTable :items="data.transactions"
                     column-filter
                     :responsive="false"
@@ -51,14 +51,14 @@
             <td>{{ item.value }} {{currency}}</td>
           </template>
         </CDataTable>
-      </CCardBody>
+      </div>
     </CCard>
 
     <CCard>
       <CCardHeader>
         <CCardTitle>Dividends</CCardTitle>
       </CCardHeader>
-      <CCardBody>
+      <div style="padding: 16px;">
         <CDataTable :items="data.dividends"
                     column-filter
                     :responsive="false"
@@ -68,7 +68,7 @@
             <td>{{ item.value }} {{currency}}</td>
           </template>
         </CDataTable>
-      </CCardBody>
+      </div>
     </CCard>
   </div>
 </template>

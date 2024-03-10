@@ -1,45 +1,42 @@
-
+<template>
+  <Pie :data="chartData" :options="chartOptions">Chart couldn't be loaded.</Pie>
+</template>
 <script>
-  import { Pie } from 'vue-chartjs'
-  import * as pl from '../../../../packages/GooglePaletteJs/palette.js'
-
-  export default {
-    extends: Pie,
-    name: 'pie-chart',
-    props: {
-      data: Array,
-      labels: Array
-    },
-    mounted () {
-      this.render()
-    },
-    computed: {
-      chartData () {
-        return this.data
-      }
-    },
-    watch: {
-      data () {
-        this.render()
-      }
-    },
-    methods: {
-      render () {
-        let backgrounds = []
-        if (this.chartData) {
-          backgrounds = pl.palette('tol', Math.min(this.data.length, 12)).map(function (hex) {
-            return '#' + hex
-          })
+import { Chart as ChartJS, ArcElement, Tooltip } from 'chart.js'
+import { Pie } from 'vue-chartjs'
+import * as pl from '../../../../packages/GooglePaletteJs/palette.js'
+ChartJS.register(ArcElement, Tooltip)
+export default {
+  name: 'App',
+  props: {
+    data: Array,
+    labels: Array
+  },
+  components: {
+    Pie
+  },
+  computed: {
+    chartData (props) {
+      let backgrounds = []
+        if (props.data) {
+        backgrounds = pl.palette('tol', Math.min(props.data.length, 12)).map(hex => '#' + hex)
         }
-
-        this.renderChart({
-          labels: this.labels,
-          datasets: [{
-            data: this.chartData,
+      return {
+        labels: props.labels,
+        datasets: [
+          {
+            data: props.data,
             backgroundColor: backgrounds
-          }]
-        }, { responsive: false, maintainAspectRatio: false })
+          }
+        ]
+      }
+    },
+    chartOptions () {
+      return {
+        responsive: false,
+        maintainAspectRatio: false
       }
     }
   }
+}
 </script>

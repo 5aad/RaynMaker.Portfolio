@@ -4,9 +4,9 @@
       <CCardHeader>
         <CCardTitle>Cashflow</CCardTitle>
       </CCardHeader>
-      <CCardBody>
+      <div class="card-body">
         <label>Limit: </label>
-        <input label="Limit" v-model="limit" @keyup.enter="onLimitChanged">
+        <input label="Limit" v-model="limit" @keyup.enter="onLimitChanged" />
 
         <table class="table-hover">
           <thead>
@@ -17,13 +17,21 @@
               <th class="value">Balance</th>
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="t in transactions" style="border-top-style:solid;border-top-width:1px" v-bind:key="t.date + Math.random()">
+          <tbody v-if="Array.isArray(transactions) && transactions.length > 0">
+            <tr
+              v-for="(t, index) in transactions"
+              :key="index"
+              style="border-top-style: solid; border-top-width: 1px"
+            >
               <td class="date">
                 {{ t.date }}
               </td>
-              <td class="comment" style="padding-left:100px;padding-right:100px;">
-                <b>{{ t.type }}</b><br />
+              <td
+                class="comment"
+                style="padding-left: 100px; padding-right: 100px"
+              >
+                <b>{{ t.type }}</b
+                ><br />
                 {{ t.comment }}
               </td>
               <td class="value">
@@ -34,59 +42,61 @@
               </td>
             </tr>
           </tbody>
+          <tbody v-else>
+             <tr>
+              <td colspan="4">{{transactions}}</td>
+             </tr>
+          </tbody>
         </table>
-      </CCardBody>
+      </div>
     </CCard>
   </div>
 </template>
 
-<script>
-  import API from '@/api'
+<script setup>
+import { ref, onMounted, watch } from 'vue'
+import API from '@/api'
+const transactions = ref(null)
+const limit = ref(25)
 
-  export default {
-    name: 'Cashflow',
-    data () {
-      return {
-        transactions: null,
-        limit: 25
-      }
-    },
-    created () {
-      this.onLimitChanged()
-    },
-    methods: {
-      async onLimitChanged () {
-        const response = await API.get(`/cashflow?limit=${this.limit}`)
-
-        this.transactions = response.data
-      }
-    },
-    watch: {
-      limit () {
-        this.onLimitChanged()
-      }
-    }
+const fetchTransactions = async () => {
+  try {
+    const response = await API.get(`/cashflow?limit=${limit.value}`)
+    transactions.value = response.data
+  } catch (error) {
+    console.error('Error fetching transactions:', error)
   }
+}
+
+onMounted(fetchTransactions)
+
+watch(limit, () => {
+  fetchTransactions()
+})
 </script>
 
 <style scoped>
-  .date {
-    text-align: left;
-  }
+.date {
+  text-align: left;
+}
+.card-body {
+  padding: 16px;
+}
 
-  .value {
-    text-align: right;
-  }
+.value {
+  text-align: right;
+}
 
-  .comment {
-    text-align: center;
-  }
+.comment {
+  text-align: center;
+}
 
-  th, td {
-    padding: 15px;
-  }
+th,
+td {
+  padding: 15px;
+}
 
-  td {
-    vertical-align: top;
-  }
+td {
+  vertical-align: top;
+}
 </style>

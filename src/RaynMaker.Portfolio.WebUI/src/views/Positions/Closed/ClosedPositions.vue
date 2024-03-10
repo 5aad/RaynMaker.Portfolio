@@ -4,7 +4,7 @@
       <CCardHeader>
         <CCardTitle>Sumamry</CCardTitle>
       </CCardHeader>
-      <CCardBody>
+      <div style="padding: 16px;">
         <table>
           <tr>
             <th>Profit</th>
@@ -15,21 +15,21 @@
             <td>{{ data.totalDividends}} {{data.currency}}</td>
           </tr>
         </table>
-      </CCardBody>
+      </div>
     </CCard>
 
     <CCard>
       <CCardHeader>
         <CCardTitle>Closed Positions</CCardTitle>
       </CCardHeader>
-      <CCardBody>
+      <div style="padding: 16px;">
         <form id="filter">
           <label style="margin-right: 10px">Filter: </label>
           <input name="query" v-model="filter">
         </form>
 
         <closed-positions-grid v-if="data.positions" :data="data.positions" :filter-key="filter" style="margin-top:10px"></closed-positions-grid>
-      </CCardBody>
+      </div>
     </CCard>
   </div>
 </template>
